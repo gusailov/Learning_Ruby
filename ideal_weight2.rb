@@ -13,9 +13,7 @@ dif = ideal_weight-weight.to_i
 puts "#{name}, Ваш идеальный вес  #{ideal_weight}кг"
 
 if dif <= 0 
-puts "#{name}, вам нужно сбросить  #{-1 * dif}кг"
-
+  puts "#{name}, вам нужно сбросить  #{-1 * dif}кг"
 else
-puts "#{name}, вам нужно набрать  #{dif}кг" 
-
+  puts "#{name}, вам нужно набрать  #{dif}кг" 
 end
