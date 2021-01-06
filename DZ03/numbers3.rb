@@ -1,3 +1,1 @@
-range = (10..100)
-
-range.step(5) { |number| puts number }
+(10..100).step(5) { |number| puts number }
