@@ -1,3 +1,3 @@
-range = (10..100).to_a
+range = (10..100)
 
-puts(range.select { |number| (number % 5).zero? })
+range.step(5) { |number| puts number }
