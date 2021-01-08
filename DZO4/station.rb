@@ -6,11 +6,11 @@ class Station
     @trains = []
   end
 
-  def add_train(train)
+  def take_train(train)
     @trains << train unless trains.include?(train)
   end
 
-  def remove_train(train)
+  def send_train(train)
     @trains.delete(train)
   end
 

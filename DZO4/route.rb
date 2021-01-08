@@ -10,4 +10,8 @@ class Route
   def add_station(station)
     @stations_list.insert(1, station) unless @stations_list.include?(station)
   end
+
+  def remove_station(station)
+    @stations_list.delete(station)
+  end
 end
