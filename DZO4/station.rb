@@ -7,8 +7,7 @@ class Station
   end
 
   def add_train(train)
-    @trains << train
-    puts 'add_train'
+    @trains << train unless trains.include?(train)
   end
 
   def remove_train(train)

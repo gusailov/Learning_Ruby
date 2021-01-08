@@ -35,17 +35,23 @@ class Train
 
   def change_station_ff
     i = route.stations_list.index(@current_station)
-    @prev_station = @current_station
-    @current_station = route.stations_list[i + 1]
-    @next_station = route.stations_list[i + 2]
-    @current_station.add_train(self)
+    if i + 1 < route.stations_list.length
+      @prev_station = @current_station
+      @current_station = route.stations_list[i + 1]
+      @next_station = route.stations_list[i + 2]
+      @prev_station.remove_train(self)
+      @current_station.add_train(self)
+    end
   end
 
   def change_station_rw
     i = route.stations_list.index(@current_station)
-    @prev_station = @current_station
-    @current_station = route.stations_list[i - 1]
-    @next_station = route.stations_list[i - 2]
-    @current_station.add_train(self)
+    if (i - 1) >= 0
+      @prev_station = @current_station
+      @current_station = route.stations_list[i - 1]
+      @next_station = route.stations_list[i - 2]
+      @prev_station.remove_train(self)
+      @current_station.add_train(self)
+    end
   end
 end
