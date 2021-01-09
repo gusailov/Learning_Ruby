@@ -24,11 +24,11 @@ class Train
     puts "Current wagon quantity: #{@wagon_qty} PCS"
   end
 
-  def wagon_increment
+  def add_wagon
     @wagon_qty += 1 if @speed.zero?
   end
 
-  def wagon_decrement
+  def remove_wagon
     @wagon_qty -= 1 if @speed.zero? && wagon_qty.positive?
   end
 
