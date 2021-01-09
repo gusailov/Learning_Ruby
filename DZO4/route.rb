@@ -1,10 +1,8 @@
 class Route
-  attr_reader :start, :finish, :stations_list
+  attr_reader :stations_list
 
   def initialize(start, finish)
-    @start = start
-    @finish = finish
-    @stations_list = [@start, @finish]
+    @stations_list = [start, finish]
   end
 
   def add_station(station)
@@ -13,5 +11,12 @@ class Route
 
   def remove_station(station)
     @stations_list.delete(station)
+  end
+
+  def put_stations_list
+    @stations_list.each do |station|
+      puts "Station: #{station} - #{station.name}"
+    end
+    nil
   end
 end
