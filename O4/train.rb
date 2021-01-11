@@ -36,25 +36,41 @@ class Train
     route.stations[@index_station]
   end
 
-  def add_route(route)
-    @route = route
-    @index_station = 0
+  def next_station
+    route.stations[@index_station + 1] if (@index_station + 1) < route.stations.length
+  end
+
+  def previous_station
+    route.stations[@index_station - 1] if @index_station.positive?
+  end
+
+  def station_take_train
     current_station.take_train(self)
   end
 
+  def station_send_train
+    current_station.send_train(self)
+  end
+
+  def add_route(route)
+    @route = route
+    @index_station = 0
+    station_take_train
+  end
+
   def go_next_station
-    if (@index_station + 1) < route.stations.length
-      current_station.send_train(self)
+    if next_station
+      station_send_train
       @index_station += 1
-      current_station.take_train(self)
+      station_take_train
     end
   end
 
   def go_previous_station
-    if @index_station.positive?
-      current_station.send_train(self)
+    if previous_station
+      station_send_train
       @index_station -= 1
-      current_station.take_train(self)
+      station_take_train
     end
   end
 
