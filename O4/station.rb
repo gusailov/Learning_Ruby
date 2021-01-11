@@ -11,19 +11,8 @@ class Station
     puts "Train came to station: #{name}"
   end
 
-  def put_trains_list
-    @trains.each do |train|
-      puts "Train on station: #{train} - #{train.number}"
-    end
-    nil
-  end
-
   def trains_by_type(type)
-    selected = @trains.select { |train| train.type == type }
-    selected.each do |train|
-      puts "#{type} trains on station: #{train} - #{train.number}"
-    end
-    nil
+    @trains.count { |train| train.type == type }
   end
 
   def send_train(train)
