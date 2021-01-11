@@ -35,32 +35,30 @@ class Train
   def add_route(route)
     @route = route
     @index_station = 0
-    @current_station = route.stations_list[@index_station]
+    @current_station = route.stations[@index_station]
     @current_station.take_train(self)
   end
 
-  def change_station(index)
+  def change_station
     @prev_station = @current_station
-    @current_station = route.stations_list[index]
+    @current_station = route.stations[@index_station]
     @prev_station.send_train(self)
     @current_station.take_train(self)
   end
 
   def change_station_ff
-    @index_station += 1 if (@index_station + 1) < route.stations_list.length
-    change_station(@index_station)
+    @index_station += 1 if (@index_station + 1) < route.stations.length
+    change_station
   end
 
   def change_station_rw
     @index_station -= 1 if @index_station.positive?
-    change_station(@index_station)
+    change_station
   end
 
   def route_point
-    puts "Previous station: #{route.stations_list[@index_station - 1].name}" if @index_station.positive?
-    puts "Current station: #{route.stations_list[@index_station].name}"
-    if (@index_station + 1) < route.stations_list.length
-      puts "Next station: #{route.stations_list[@index_station + 1].name}"
-    end
+    puts "Previous station: #{route.stations[@index_station - 1].name}" if @index_station.positive?
+    puts "Current station: #{route.stations[@index_station].name}"
+    puts "Next station: #{route.stations[@index_station + 1].name}" if (@index_station + 1) < route.stations.length
   end
 end
