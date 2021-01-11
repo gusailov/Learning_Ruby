@@ -75,8 +75,8 @@ class Train
   end
 
   def route_point
-    puts "Previous station: #{route.stations[@index_station - 1].name}" if @index_station.positive?
-    puts "Current station: #{route.stations[@index_station].name}"
-    puts "Next station: #{route.stations[@index_station + 1].name}" if (@index_station + 1) < route.stations.length
+    puts "Previous station: #{previous_station.name}"
+    puts "Current station: #{current_station.name}"
+    puts "Next station: #{next_station.name}"
   end
 end
