@@ -75,8 +75,8 @@ class Train
   end
 
   def route_point
-    puts "Previous station: #{previous_station.name}"
+    puts "Previous station: #{previous_station.name}" if previous_station
     puts "Current station: #{current_station.name}"
-    puts "Next station: #{next_station.name}"
+    puts "Next station: #{next_station.name}" if next_station
   end
 end
