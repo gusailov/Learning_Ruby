@@ -14,8 +14,8 @@ class Route
   end
 
   def put_stations_list
-    @stations.each do |station|
-      puts "Station: #{station} - #{station.name}"
+    @stations.each_with_index do |station, index|
+      puts "Station: #{index} - #{station.name}"
     end
   end
 end

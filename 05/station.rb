@@ -19,4 +19,10 @@ class Station
     @trains.delete(train)
     puts "Train gone from station: #{name}"
   end
+
+  def put_trains_list
+    @trains.each do |train|
+      puts "Train number: #{train.number}, type: #{train.type}"
+    end
+  end
 end
