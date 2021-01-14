@@ -1,7 +1,6 @@
 class PassengerTrain < Train
   def initialize(number)
-    super
-    @type = PASS_TYPE
+    super(number, 'pass')
   end
 
   def accept_class_wagon

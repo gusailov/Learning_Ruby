@@ -8,7 +8,7 @@ class Station
 
   def take_train(train)
     @trains << train unless trains.include?(train)
-    puts "Train came to station: #{name}"
+    puts "Поезд №:#{train.number} прибыл на станцию #{name}"
   end
 
   def trains_by_type(type)
@@ -17,12 +17,12 @@ class Station
 
   def send_train(train)
     @trains.delete(train)
-    puts "Train gone from station: #{name}"
+    puts "Поезд №:#{train.number} покинул станцию #{name}"
   end
 
   def put_trains_list
     @trains.each do |train|
-      puts "Train number: #{train.number}, type: #{train.type}"
+      puts "Поезд №: #{train.number}, тип: #{train.type}"
     end
   end
 end

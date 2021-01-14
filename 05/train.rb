@@ -1,18 +1,19 @@
 class Train
   attr_reader :number, :type, :speed, :wagons, :route
 
-  def initialize(number)
+  def initialize(number, type)
     @number = number
     @wagons = []
     @speed = 0
+    @type = type
   end
 
   def add_wagon(wagon)
-    unless @speed.zero?
+    if @speed.zero?
+      @wagons << wagon if wagon.instance_of?(accept_class_wagon)
+    else
       puts 'Вы должны остановить поезд'
-      return
     end
-    @wagons << wagon unless wagons.include?(wagon) && wagon.type == type
   end
 
   def remove_wagon
@@ -24,7 +25,7 @@ class Train
   end
 
   def current_speed
-    puts "Current speed: #{@speed} km/h"
+    puts "Текущая скорость: #{@speed} км/ч"
   end
 
   def stop
@@ -32,7 +33,7 @@ class Train
   end
 
   def current_wagon_qty
-    puts "Current wagon quantity: #{@wagons.length} PCS"
+    puts "Текущее кол-во вагонов: #{@wagons.length}шт."
   end
 
   def add_route(route)
@@ -58,9 +59,9 @@ class Train
   end
 
   def route_point
-    puts "Previous station: #{previous_station.name}" if previous_station
-    puts "Current station: #{current_station.name}"
-    puts "Next station: #{next_station.name}" if next_station
+    puts "Предыдущая станция: #{previous_station.name}" if previous_station
+    puts "В данный момент поезд на станции: #{current_station.name}"
+    puts "Следующая станция: #{next_station.name}" if next_station
   end
 
   private

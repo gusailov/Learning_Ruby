@@ -39,6 +39,8 @@ class Railroad
     end
   end
 
+  protected
+
   def create_station
     puts 'Введите название станции'
     name = gets.chomp
@@ -73,7 +75,7 @@ class Railroad
 
   def del_station_in_route
     route = route_from_list
-    station = station_from_list
+    station = station_from_route(route)
     route.remove_station(station)
     route.put_stations_list
   end
@@ -116,8 +118,6 @@ class Railroad
     train.route.put_stations_list
   end
 
-  protected
-
   def show_station_list
     @stations.each_with_index do |station, index|
       puts "#{index} - #{station.name}"
@@ -136,6 +136,12 @@ class Railroad
     end
   end
 
+  def show_stations_in_route(route)
+    route.stations.each_with_index do |station, index|
+      puts "#{index} - #{station.name}"
+    end
+  end
+
   def station_from_list(text = 'Выберите станцию')
     loop do
       puts text
@@ -144,6 +150,17 @@ class Railroad
       check = (index.negative? || index > (@stations.count - 1))
       puts 'Такой станции нет в списке' if check
       return @stations[index] unless check
+    end
+  end
+
+  def station_from_route(route)
+    loop do
+      puts 'Выберите станцию'
+      show_stations_in_route(route)
+      index = gets.to_i
+      check = (index.negative? || index > (route.stations.count - 1))
+      puts 'Такой станции нет в списке' if check
+      return route.stations[index] unless check
     end
   end
 
