@@ -8,13 +8,9 @@ class Railroad
   end
 
   def seed
-    @stations << Station.new('a') << Station.new('b') << Station.new('c') << Station.new('e')
-    @trains << CargoTrain.new(1,
-                              CARGO_TYPE) << PassengerTrain.new(2,
-                                                                PASS_TYPE) << PassengerTrain.new(3,
-                                                                                                 PASS_TYPE) << PassengerTrain.new(
-                                                                                                   4, CARGO_TYPE
-                                                                                                 )
+    ('a'..'f').each { |i| @stations << Station.new(i) }
+    (1..3).each { |i| @trains << CargoTrain.new(i) }
+    (4..6).each { |i| @trains << PassengerTrain.new(i) }
     @routes << Route.new(stations.first, stations.last)
   end
 
@@ -52,14 +48,11 @@ class Railroad
   def create_train
     puts 'Введите номер поезда'
     number = gets.chomp
-    puts puts <<-TRAIN_TYPE
-        Введите 1 - грузовой
-        Введите 2 - пассажирский
-    TRAIN_TYPE
+    puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
     command = gets.to_i
     case command
-    when 1 then trains << CargoTrain.new(number, CARGO_TYPE)
-    when 2 then trains << PassengerTrain.new(number, PASS_TYPE)
+    when 1 then trains << CargoTrain.new(number)
+    when 2 then trains << PassengerTrain.new(number)
     else
       puts 'Команда введена не правильно'
     end
@@ -76,51 +69,54 @@ class Railroad
   end
 
   def add_station_in_route
-    route = get_route
-    station = get_station
+    route = route_from_list
+    station = station_from_list
+    puts "add_station_in_route #{station}"
     route.add_station(station)
     route.put_stations_list
   end
 
   def del_station_in_route
-    route = get_route
-    station = get_station
+    route = route_from_list
+    station = station_from_list
     route.remove_station(station)
     route.put_stations_list
   end
 
   def take_route_for_train
-    route = get_route
-    train = get_train
+    route = route_from_list
+    train = train_from_list
     train.add_route(route)
   end
 
   def add_wagon_to_train
-    train = get_train
-    if train.type == CARGO_TYPE
-      train.add_wagon(CargoWagon.new)
-    else
-      train.add_wagon(PassengerWagon.new)
-    end
+    train = train_from_list
+    wagon = train.accept_class_wagon.new
+    train.add_wagon(wagon)
+  end
+
+  def del_wagon_to_train
+    train = train_from_list
+    train.remove_wagon
   end
 
   def move_train_route_forward
-    train = get_train
+    train = train_from_list
     train.go_next_station
   end
 
   def move_train_route_back
-    train = get_train
+    train = train_from_list
     train.go_previous_station
   end
 
   def show_information
-    station = get_station
+    station = station_from_list
     station.put_trains_list
   end
 
   def show_station_for_train
-    train = get_train
+    train = train_from_list
     train.route_point
     train.route.put_stations_list
   end
@@ -145,21 +141,36 @@ class Railroad
     end
   end
 
-  def get_station
-    puts 'Выберите станцию'
-    show_station_list
-    @stations[gets.to_i]
+  def station_from_list
+    loop do
+      puts 'Выберите станцию'
+      show_station_list
+      index = gets.to_i
+      check = (index.negative? || index > @stations.length)
+      puts 'wrong number' if check
+      return @stations[index] unless check
+    end
   end
 
-  def get_route
-    puts 'Выберите машрут'
-    show_routes_list
-    @routes[gets.to_i]
+  def route_from_list
+    loop do
+      puts 'Выберите машрут'
+      show_routes_list
+      index = gets.to_i
+      check = (index.negative? || index > @routes.length)
+      puts 'wrong number' if check
+      return @routes[index] unless check
+    end
   end
 
-  def get_train
-    puts 'Выберите поезд'
-    show_trains_list
-    @trains[gets.to_i]
+  def train_from_list
+    loop do
+      puts 'Выберите поезд'
+      show_trains_list
+      index = gets.to_i
+      check = (index.negative? || index > @trains.length)
+      puts 'wrong number' if check
+      return @trains[index] unless check
+    end
   end
 end

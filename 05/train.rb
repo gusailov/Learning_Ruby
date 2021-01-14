@@ -1,14 +1,18 @@
 class Train
   attr_reader :number, :type, :speed, :wagons, :route
 
-  def initialize(number, _type)
+  def initialize(number)
     @number = number
     @wagons = []
     @speed = 0
   end
 
   def add_wagon(wagon)
-    @wagons << wagon unless wagons.include?(wagon) && wagon.type == type && @speed.zero?
+    unless @speed.zero?
+      puts 'Вы должны остановить поезд'
+      return
+    end
+    @wagons << wagon unless wagons.include?(wagon) && wagon.type == type
   end
 
   def remove_wagon
