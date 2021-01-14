@@ -59,19 +59,14 @@ class Railroad
   end
 
   def create_route
-    puts 'Выберите номер начальной станции'
-    show_station_list
-    start = @stations[gets.to_i]
-    puts 'Выберите номер конечной станции'
-    show_station_list
-    finish = @stations[gets.to_i]
+    start = station_from_list('Выберите номер начальной станции')
+    finish = station_from_list('Выберите номер конечной станции')
     routes << Route.new(start, finish)
   end
 
   def add_station_in_route
     route = route_from_list
     station = station_from_list
-    puts "add_station_in_route #{station}"
     route.add_station(station)
     route.put_stations_list
   end
@@ -141,13 +136,13 @@ class Railroad
     end
   end
 
-  def station_from_list
+  def station_from_list(text = 'Выберите станцию')
     loop do
-      puts 'Выберите станцию'
+      puts text
       show_station_list
       index = gets.to_i
-      check = (index.negative? || index > @stations.length)
-      puts 'wrong number' if check
+      check = (index.negative? || index > (@stations.count - 1))
+      puts 'Такой станции нет в списке' if check
       return @stations[index] unless check
     end
   end
@@ -157,8 +152,8 @@ class Railroad
       puts 'Выберите машрут'
       show_routes_list
       index = gets.to_i
-      check = (index.negative? || index > @routes.length)
-      puts 'wrong number' if check
+      check = (index.negative? || index > (@routes.count - 1))
+      puts 'Такого маршрута нет в списке' if check
       return @routes[index] unless check
     end
   end
@@ -168,8 +163,8 @@ class Railroad
       puts 'Выберите поезд'
       show_trains_list
       index = gets.to_i
-      check = (index.negative? || index > @trains.length)
-      puts 'wrong number' if check
+      check = (index.negative? || index > (@trains.count - 1))
+      puts 'Такого поезда нет в списке' if check
       return @trains[index] unless check
     end
   end
