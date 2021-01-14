@@ -44,12 +44,16 @@ class Railroad
   def create_station
     puts 'Введите название станции'
     name = gets.chomp
-    stations << Station.new(name)
+    if @stations.any? { |st| st.name == name }
+      puts 'Станция с таким именем уже существует'
+    else
+      @stations << Station.new(name)
+      puts "Станция #{name} создана успешно"
+    end
   end
 
   def create_train
-    puts 'Введите номер поезда'
-    number = gets.chomp
+    number = train_number_check
     puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
     command = gets.to_i
     case command
@@ -61,16 +65,34 @@ class Railroad
   end
 
   def create_route
-    start = station_from_list('Выберите номер начальной станции')
-    finish = station_from_list('Выберите номер конечной станции')
-    routes << Route.new(start, finish)
+    if @stations.empty?
+      puts 'Сначала нужно создать хотя бы две станции'
+    else
+      start = station_from_list('Выберите номер начальной станции')
+      finish = station_from_list('Выберите номер конечной станции')
+      if start == finish
+        puts 'Начальная и конечная станции не могут совпадать'
+      else
+        routes << Route.new(start, finish)
+        puts "Маршрут от #{start.name.inspect} до #{finish.name.inspect} создан"
+      end
+    end
   end
 
   def add_station_in_route
-    route = route_from_list
-    station = station_from_list
-    route.add_station(station)
-    route.put_stations_list
+    if @stations.empty?
+      puts 'Сначала нужно создать хотя бы две станции'
+    else
+      route = route_from_list
+      route.put_stations_list
+      station = station_from_list('Выберите станцию для добавления')
+      if route.stations.include?(station)
+        puts 'Станция уже в есть в маршруте'
+      else
+        route.add_station(station)
+        route.put_stations_list
+      end
+    end
   end
 
   def del_station_in_route
@@ -150,6 +172,18 @@ class Railroad
       check = (index.negative? || index > (@stations.count - 1))
       puts 'Такой станции нет в списке' if check
       return @stations[index] unless check
+    end
+  end
+
+  def train_number_check
+    loop do
+      puts 'Введите номер поезда'
+      number = gets.chomp
+      if @trains.any? { |t| t.number == number }
+        puts 'Поезд с таким номером уже создан'
+      else
+        return number
+      end
     end
   end
 
