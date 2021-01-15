@@ -1,4 +1,5 @@
 class Train
+  include CompanyName
   attr_reader :number, :type, :speed, :wagons, :route
 
   def initialize(number, type)
