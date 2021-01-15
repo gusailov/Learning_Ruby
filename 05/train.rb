@@ -2,11 +2,23 @@ class Train
   include CompanyName
   attr_reader :number, :type, :speed, :wagons, :route
 
+  @@trains = []
+
   def initialize(number, type)
     @number = number
     @wagons = []
     @speed = 0
     @type = type
+    @@trains << self
+  end
+
+  def self.find(num)
+    train = @@trains.select { |t| t.number == num }
+    if train.empty?
+      nil
+    else
+      train
+    end
   end
 
   def add_wagon(wagon)

@@ -9,3 +9,26 @@ module CompanyName
 
   attr_accessor :company_name
 end
+
+module InstanceCounter
+  def self.included(base)
+    base.extend ClassMethods
+    base.include InstanceMethods
+  end
+
+  module ClassMethods
+    def class.initialize
+      puts 'ClassMethods test initialize'
+    end
+
+    def test
+      puts "ClassMethods test #{self}"
+    end
+  end
+
+  module InstanceMethods
+    def test
+      puts "InstanceMethods test #{self}"
+    end
+  end
+end
