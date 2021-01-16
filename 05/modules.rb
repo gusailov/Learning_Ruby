@@ -1,13 +1,15 @@
 module CompanyName
-  def get_company_name
-    company_name
-  end
-
   def set_company_name(name)
-    self.company_name = name
+    self.company = name
   end
 
-  attr_accessor :company_name
+  def get_company_name
+    company
+  end
+
+  protected
+
+  attr_accessor :company
 end
 
 module InstanceCounter
@@ -17,8 +19,15 @@ module InstanceCounter
   end
 
   module ClassMethods
-    def class.initialize
-      puts 'ClassMethods test initialize'
+    @@inst = 0
+    def self.initialize
+      super
+      @@inst += 1
+      puts "self.initialize #{self}"
+    end
+
+    def get_inst
+      @@inst
     end
 
     def test
