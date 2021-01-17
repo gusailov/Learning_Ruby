@@ -19,25 +19,24 @@ module InstanceCounter
   end
 
   module ClassMethods
-    @@inst = 0
-    def self.initialize
-      super
-      @@inst += 1
-      puts "self.initialize #{self}"
+    @@instances = 0
+
+    def self.instances
+      instances
     end
 
-    def get_inst
-      @@inst
+    def count
+      @@instances += 1
+      puts "count #{self}"
     end
 
-    def test
-      puts "ClassMethods test #{self}"
-    end
+    attr_accessor :instances
   end
 
   module InstanceMethods
-    def test
-      puts "InstanceMethods test #{self}"
+    def register_instance
+      self.class.count
+      puts "register_instance self #{@@instances}"
     end
   end
 end

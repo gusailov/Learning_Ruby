@@ -1,4 +1,5 @@
 class Train
+  # include InstanceCounter
   include CompanyName
   attr_reader :number, :type, :speed, :wagons, :route
 
@@ -10,6 +11,7 @@ class Train
     @speed = 0
     @type = type
     @@trains << self
+   # register_instance
   end
 
   def self.find(num)

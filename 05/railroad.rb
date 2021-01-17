@@ -1,5 +1,4 @@
 class Railroad
-  include InstanceCounter
   attr_reader :stations, :trains, :routes
 
   def initialize
