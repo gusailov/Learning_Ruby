@@ -11,7 +11,7 @@ class Station
     register_instance
   end
 
-  def self.stations
+  def self.all
     @@stations
   end
 
