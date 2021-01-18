@@ -12,6 +12,14 @@ class Train
     @type = type
     @@trains[self.number] = self
     register_instance
+    validate!
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
   end
 
   def self.find(num)
@@ -72,6 +80,12 @@ class Train
     puts "Предыдущая станция: #{previous_station.name}" if previous_station
     puts "В данный момент поезд на станции: #{current_station.name}"
     puts "Следующая станция: #{next_station.name}" if next_station
+  end
+
+  protected
+
+  def validate!
+    raise 'NUMBEEERR' if number.nil?
   end
 
   private
