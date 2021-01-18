@@ -19,24 +19,20 @@ module InstanceCounter
   end
 
   module ClassMethods
-    @@instances = 0
-
-    def self.instances
-      instances
+    def instances
+      @instances ||= 0
     end
 
-    def count
-      @@instances += 1
-      puts "count #{self}"
+    def increment_instances
+      @instances = instances + 1
     end
-
-    attr_accessor :instances
   end
 
   module InstanceMethods
+    private
+
     def register_instance
-      self.class.count
-      puts "register_instance self #{@@instances}"
+      self.class.increment_instances
     end
   end
 end

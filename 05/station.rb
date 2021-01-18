@@ -15,10 +15,6 @@ class Station
     @@stations
   end
 
-  def self.instances
-    @@instances
-  end
-
   def take_train(train)
     @trains << train unless trains.include?(train)
     puts "Поезд №:#{train.number} прибыл на станцию #{name}"
