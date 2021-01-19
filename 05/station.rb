@@ -9,6 +9,14 @@ class Station
     @trains = []
     @@stations << self
     register_instance
+    validate!
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
   end
 
   def self.all
@@ -33,5 +41,11 @@ class Station
     @trains.each do |train|
       puts "Поезд №: #{train.number}, тип: #{train.type}"
     end
+  end
+
+  protected
+
+  def validate!
+    raise 'ВВЕДИТЕ ИМЯ' if name.to_s.empty?
   end
 end

@@ -54,7 +54,7 @@ class Railroad
   end
 
   def create_train
-    number = train_number_check
+    number = train_number_check2
     puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
     command = gets.to_i
     case command
@@ -194,17 +194,23 @@ class Railroad
     false
   end
 
+  def train_number_check2
+    attempt = 0
+    begin
+      num = train_number_check
+      validate!(num)
+    rescue RuntimeError => e
+      puts e.inspect
+      attempt += 1
+      retry if attempt < 3
+      puts ' ХХХ-ХХ'
+    end
+  end
+
   def train_number_check
     loop do
       puts 'Введите номер поезда в формате ХХХ-ХХ'
       number = gets.chomp
-      begin
-        validate!(number)
-      rescue RuntimeError => e
-        puts e.inspect
-        break
-      end
-
       if @trains.any? { |t| t.number == number }
         puts 'Поезд с таким номером уже создан'
       else
