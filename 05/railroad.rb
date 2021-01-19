@@ -1,6 +1,7 @@
 class Railroad
   attr_reader :stations, :trains, :routes
 
+  NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   def initialize
     @stations = []
     @trains = []
@@ -57,8 +58,14 @@ class Railroad
     puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
     command = gets.to_i
     case command
-    when 1 then trains << CargoTrain.new(number)
-    when 2 then trains << PassengerTrain.new(number)
+    when 1
+      train = CargoTrain.new(number)
+      trains << train
+      puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
+    when 2
+      train = PassengerTrain.new(number)
+      trains << train
+      puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
     else
       puts 'Команда введена не правильно'
     end
@@ -175,10 +182,29 @@ class Railroad
     end
   end
 
+  def validate!(number)
+    raise 'НЕВЕРНЫЙ ФОРМАТ НОМЕРА' if number !~ NUMBER_FORMAT
+  end
+
+  def valid?(number)
+    validate!(number)
+    true
+  rescue RuntimeError => e
+    puts e.inspect
+    false
+  end
+
   def train_number_check
     loop do
-      puts 'Введите номер поезда'
+      puts 'Введите номер поезда в формате ХХХ-ХХ'
       number = gets.chomp
+      begin
+        validate!(number)
+      rescue RuntimeError => e
+        puts e.inspect
+        break
+      end
+
       if @trains.any? { |t| t.number == number }
         puts 'Поезд с таким номером уже создан'
       else

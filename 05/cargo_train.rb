@@ -1,8 +1,7 @@
 class CargoTrain < Train
   def initialize(number)
     super(number, 'cargo')
-    
-  end
+     end
   protected
   def accept_class_wagon
     CargoWagon
