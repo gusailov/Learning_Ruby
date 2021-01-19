@@ -53,21 +53,36 @@ class Railroad
     end
   end
 
+  def validate!(number)
+    raise 'НЕВЕРНЫЙ ФОРМАТ НОМЕРА' if number !~ NUMBER_FORMAT
+    raise 'Поезд с таким номером уже создан' if @trains.any? { |t| t.number == number }
+  end
+
   def create_train
-    number = train_number_check2
-    puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
-    command = gets.to_i
-    case command
-    when 1
-      train = CargoTrain.new(number)
-      trains << train
-      puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
-    when 2
-      train = PassengerTrain.new(number)
-      trains << train
-      puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
-    else
-      puts 'Команда введена не правильно'
+    attempt = 0
+    begin
+      puts 'Введите номер поезда в формате ХХХ-ХХ'
+      number = gets.chomp
+      validate!(number)
+      puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
+      command = gets.to_i
+      case command
+      when 1
+        train = CargoTrain.new(number)
+        trains << train
+        puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
+      when 2
+        train = PassengerTrain.new(number)
+        trains << train
+        puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
+      else
+        puts 'Команда введена не правильно'
+      end
+    rescue RuntimeError => e
+      puts e.inspect
+      attempt += 1
+      retry if attempt < 3
+      puts 'формат номера не соответствует ХХХ-ХХ'
     end
   end
 
@@ -179,43 +194,6 @@ class Railroad
       check = (index.negative? || index > (@stations.count - 1))
       puts 'Такой станции нет в списке' if check
       return @stations[index] unless check
-    end
-  end
-
-  def validate!(number)
-    raise 'НЕВЕРНЫЙ ФОРМАТ НОМЕРА' if number !~ NUMBER_FORMAT
-  end
-
-  def valid?(number)
-    validate!(number)
-    true
-  rescue RuntimeError => e
-    puts e.inspect
-    false
-  end
-
-  def train_number_check2
-    attempt = 0
-    begin
-      num = train_number_check
-      validate!(num)
-    rescue RuntimeError => e
-      puts e.inspect
-      attempt += 1
-      retry if attempt < 3
-      puts ' ХХХ-ХХ'
-    end
-  end
-
-  def train_number_check
-    loop do
-      puts 'Введите номер поезда в формате ХХХ-ХХ'
-      number = gets.chomp
-      if @trains.any? { |t| t.number == number }
-        puts 'Поезд с таким номером уже создан'
-      else
-        return number
-      end
     end
   end
 
