@@ -3,8 +3,18 @@ class Route
   attr_reader :stations
 
   def initialize(start, finish)
+    @start = start
+    @finish = finish
     @stations = [start, finish]
     register_instance
+    validate!
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
   end
 
   def add_station(station)
@@ -20,5 +30,11 @@ class Route
     @stations.each_with_index do |station, index|
       puts "Станция: #{index} - #{station.name}"
     end
+  end
+
+  protected
+
+  def validate!
+    raise 'Начальная и конечная станции не могут совпадать' if @start == @finish
   end
 end

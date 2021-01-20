@@ -4,6 +4,7 @@ class Train
   attr_reader :number, :type, :speed, :wagons, :route
 
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
+  TYPE_FORMAT = /^\S+$/.freeze
   @@trains = {}
 
   def initialize(number, type)
@@ -14,10 +15,6 @@ class Train
     @@trains[self.number] = self
     register_instance
     validate!
-  end
-
-  def validate!
-    raise 'НЕВЕРНЫЙ ФОРМАТ НОМЕРА' if number !~ NUMBER_FORMAT
   end
 
   def valid?
@@ -85,6 +82,14 @@ class Train
     puts "Предыдущая станция: #{previous_station.name}" if previous_station
     puts "В данный момент поезд на станции: #{current_station.name}"
     puts "Следующая станция: #{next_station.name}" if next_station
+  end
+
+  protected
+
+  def validate!
+    raise 'Формат номера должен быть ХХХ-ХХ' if number !~ NUMBER_FORMAT
+    raise 'Нужно ввести тип' if type.empty?
+    raise 'В названии типа не должно быть пробелов, используйте "_"' if type !~ TYPE_FORMAT
   end
 
   private
