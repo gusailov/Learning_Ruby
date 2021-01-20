@@ -12,6 +12,15 @@ module CompanyName
   attr_accessor :company
 end
 
+module Valid
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
+  end
+end
+
 module InstanceCounter
   def self.included(base)
     base.extend ClassMethods

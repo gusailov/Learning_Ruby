@@ -1,20 +1,14 @@
 class Route
   include InstanceCounter
+  include Valid
   attr_reader :stations
 
   def initialize(start, finish)
     @start = start
     @finish = finish
+    validate!
     @stations = [start, finish]
     register_instance
-    validate!
-  end
-
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
   end
 
   def add_station(station)

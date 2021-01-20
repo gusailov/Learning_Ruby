@@ -53,17 +53,11 @@ class Railroad
     end
   end
 
-  def validate!(number)
-    raise 'НЕВЕРНЫЙ ФОРМАТ НОМЕРА' if number !~ NUMBER_FORMAT
-    raise 'Поезд с таким номером уже создан' if @trains.any? { |t| t.number == number }
-  end
-
   def create_train
     attempt = 0
     begin
       puts 'Введите номер поезда в формате ХХХ-ХХ'
       number = gets.chomp
-      validate!(number)
       puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
       command = gets.to_i
       case command

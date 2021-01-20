@@ -1,6 +1,7 @@
 class Train
   include InstanceCounter
   include CompanyName
+  include Valid
   attr_reader :number, :type, :speed, :wagons, :route
 
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
@@ -9,21 +10,14 @@ class Train
 
   def initialize(number, type)
     @number = number
+    @type = type
+    validate!
     @wagons = []
     @speed = 0
-    @type = type
     @@trains[self.number] = self
     register_instance
-    validate!
   end
-
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
+  puts @@trains
   def self.find(num)
     @@trains[num]
   end
@@ -90,6 +84,7 @@ class Train
     raise 'Формат номера должен быть ХХХ-ХХ' if number !~ NUMBER_FORMAT
     raise 'Нужно ввести тип' if type.empty?
     raise 'В названии типа не должно быть пробелов, используйте "_"' if type !~ TYPE_FORMAT
+    raise 'Поезд с таким номером уже создан' if @@trains.key?(number)
   end
 
   private
