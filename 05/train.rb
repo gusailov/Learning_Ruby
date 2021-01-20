@@ -17,7 +17,7 @@ class Train
     @@trains[self.number] = self
     register_instance
   end
-  puts @@trains
+
   def self.find(num)
     @@trains[num]
   end
