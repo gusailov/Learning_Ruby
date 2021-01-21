@@ -6,6 +6,7 @@ class Railroad
     @stations = []
     @trains = []
     @routes = []
+    @wagons = []
   end
 
   def seed
@@ -24,15 +25,16 @@ class Railroad
       when 1 then create_station
       when 2 then create_train
       when 3 then create_route
-      when 4 then add_station_in_route
-      when 5 then del_station_in_route
-      when 6 then take_route_for_train
-      when 7 then add_wagon_to_train
-      when 8 then del_wagon_to_train
-      when 9 then move_train_route_forward
-      when 10 then move_train_route_back
-      when 11 then show_information
-      when 12 then show_station_for_train
+      when 4 then create_wagon
+      when 5 then add_station_in_route
+      when 6 then del_station_in_route
+      when 7 then take_route_for_train
+      when 8 then add_wagon_to_train
+      when 9 then del_wagon_to_train
+      when 10 then move_train_route_forward
+      when 11 then move_train_route_back
+      when 12 then show_information
+      when 13 then show_station_for_train
       when 0 then break
       else
         puts 'Команда введена не правильно'
@@ -92,6 +94,27 @@ class Railroad
         routes << Route.new(start, finish)
         puts "Маршрут от #{start.name.inspect} до #{finish.name.inspect} создан"
       end
+    end
+  end
+
+  def create_wagon
+    puts 'Введите: 1 - создать грузовой вагон, 2 - создать пассажирский'
+    command = gets.to_i
+    case command
+    when 1
+      puts 'Введите общий объем вагона'
+      volume = gets.to_i
+      wagon = CargoWagon.new(volume)
+      wagons << wagon
+      puts 'Вагон создан успешно'
+    when 2
+      puts 'Введите общий объем вагона'
+      seats = gets.to_i
+      wagon  = PassengerWagon.new(seats)
+      wagons << wagon
+      puts 'Вагон создан успешно'
+    else
+      puts 'Команда введена не правильно'
     end
   end
 

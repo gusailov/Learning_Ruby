@@ -3,7 +3,7 @@ class PassengerTrain < Train
     super(number, 'pass')
   end
 
-  protected
+  # protected
 
   def accept_class_wagon
     PassengerWagon

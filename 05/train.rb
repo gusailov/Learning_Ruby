@@ -78,6 +78,10 @@ class Train
     puts "Следующая станция: #{next_station.name}" if next_station
   end
 
+  def each_wagons
+    @wagons.each { |wagon| yield(wagon) }
+  end
+
   protected
 
   def validate!
