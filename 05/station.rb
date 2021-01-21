@@ -1,7 +1,7 @@
 class Station
   include InstanceCounter
   include Valid
-  attr_reader :name, :trains, :b
+  attr_reader :name, :trains
 
   @@stations = []
   NAME_FORMAT = /^\S+$/.freeze
@@ -38,13 +38,6 @@ class Station
 
   def each_trains
     @trains.each { |train| yield(train) }
-  end
-
-  def each_trains_with_block
-    block = proc do |train|
-      puts "Номер поезда #{train.number}, Тип #{train.type}, Количество вагонов - #{train.wagons.size}"
-    end
-    each_trains(&block)
   end
 
   protected

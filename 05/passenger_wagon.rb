@@ -18,11 +18,11 @@ class PassengerWagon
     end
   end
 
-  def occupied_seats_num
+  def occupied_seats_qty
     @occupied_seats
   end
 
-  def free_seats_num
+  def free_seats_qty
     @free_seats
   end
 end
