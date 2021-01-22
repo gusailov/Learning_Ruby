@@ -6,7 +6,7 @@ class Railroad
     @stations = []
     @trains = []
     @routes = []
-    @wagons = []
+    @wagons = { cargowagons: [], passengerwagons: [] }
   end
 
   def seed
@@ -14,8 +14,8 @@ class Railroad
     (1..3).each { |i| @trains << CargoTrain.new('111-2' + i.to_s) }
     (4..6).each { |i| @trains << PassengerTrain.new('111-2' + i.to_s) }
     @routes << Route.new(stations.first, stations.last)
-    3.times { @trains[0].add_wagon(CargoWagon.new(50)) }
-    5.times { @trains[5].add_wagon(PassengerWagon.new(45)) }
+    3.times { @wagons[:cargowagons] << CargoWagon.new(70) }
+    5.times { @wagons[:passengerwagons] << PassengerWagon.new(45) }
     @trains.each { |train| @stations.first.take_train(train) }
   end
 
@@ -38,8 +38,8 @@ class Railroad
       when 11 then move_train_route_back
       when 12 then show_information
       when 13 then show_station_for_train
-      when 14 then wagons_list_for_train
-      when 15 then trains_list_for_station
+      when 14 then train_wagons_list
+      when 15 then station_trains_list
       when 16 then take_seat_or_volume_in_wagon
       when 0 then break
       else
@@ -110,14 +110,12 @@ class Railroad
     when 1
       puts 'Введите общий объем вагона'
       volume = gets.to_i
-      wagon = CargoWagon.new(volume)
-      @wagons << wagon
+      @wagons[:cargowagons] << CargoWagon.new(volume)
       puts 'Вагон создан успешно'
     when 2
-      puts 'Введите общий объем вагона'
+      puts 'Введите кол-во мест в вагоне'
       seats = gets.to_i
-      wagon = PassengerWagon.new(seats)
-      @wagons << wagon
+      @wagons[:passengerwagons] << PassengerWagon.new(seats)
       puts 'Вагон создан успешно'
     else
       puts 'Команда введена не правильно'
@@ -157,22 +155,27 @@ class Railroad
     train = train_from_list
     case train.type
     when 'cargo'
-      puts 'Введите общий объем вагона'
-      number = gets.to_i
+      if @wagons[:cargowagons].empty?
+        puts 'Грузовых вагонов нет'
+      else
+        train.add_wagon(@wagons[:cargowagons].pop)
+      end
     when 'pass'
-      puts 'Введите общее кол-во мест'
-      number = gets.to_i
+      if @wagons[:passengerwagons].empty?
+        puts 'Пассажирских вагонов нет'
+      else
+        train.add_wagon(@wagons[:passengerwagons].pop)
+      end
     else
       puts '??'
     end
-    wagon = train.accept_class_wagon.new(number)
-    train.add_wagon(wagon)
     puts 'Вагон успешно добавлен'
   end
 
   def del_wagon_to_train
     train = train_from_list
-    train.remove_wagon
+    puts  train.remove_wagon
+    puts  train.wagons
   end
 
   def move_train_route_forward
@@ -208,29 +211,28 @@ class Railroad
     end
   end
 
-  def wagons_list_for_train(_text = '')
+  def train_wagons_list(_text = '')
     train = train_from_list
     if !train.wagons.empty?
       case train.type
       when 'cargo'
-        block = proc do |wagon, index|
-          puts "Тип вагона : #{wagon.class}, номер : #{index + 1}, свободный объем : #{wagon.available_volume_qty}, занятый объем : #{wagon.occupied_volume_qty}"
+        train.each_wagons do |wagon|
+          puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}, свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
         end
       when 'pass'
-        block = proc do |wagon, index|
-          puts "Тип вагона : #{wagon.class}, номер : #{index + 1}, свободных мест : #{wagon.free_seats_qty}, занятых мест : #{wagon.occupied_seats_qty}"
+        train.each_wagons do |wagon|
+          puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}, свободных мест : #{wagon.free_seats}, занятых мест : #{wagon.occupied_seats}"
         end
       else
         puts 'такого поезда не существует'
       end
-      train.each_wagons(&block)
     else
       puts 'У поезда нет вагонов'
     end
   end
 
   def take_seat_or_volume_in_wagon
-    wagons = wagons_list_for_train('Выберите вагон')
+    wagons = train_wagons_list('Выберите вагон')
     if !wagons
       nil
     else
@@ -241,25 +243,24 @@ class Railroad
         puts 'Введите объем, который необходимо занять'
         volume = gets.to_i
         wagon.fill_volume(volume)
-        puts "Вагон номер : #{i + 1}, свободный объем : #{wagon.available_volume_qty}, занятый объем : #{wagon.occupied_volume_qty}"
+        puts "Вагон номер : #{wagon.number}, свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
       when 'PassengerWagon'
         wagon.take_seat
-        puts "Вагон номер : #{i + 1}, свободных мест : #{wagon.free_seats_qty}, занятых мест : #{wagon.occupied_seats_qty}"
+        puts "Вагон номер : #{wagon.number}, свободных мест : #{wagon.free_seats}, занятых мест : #{wagon.occupied_seats}"
       else
         puts 'Такого вагона не существует'
       end
     end
   end
 
-  def trains_list_for_station
+  def station_trains_list
     station = station_from_list
     if station.trains.empty?
       puts "На станции #{station.name} нет поездов"
     else
-      block = proc do |train|
+      station.each_trains do |train|
         puts "Номер поезда #{train.number}, Тип #{train.type}, Количество вагонов - #{train.wagons.size}"
       end
-      station.each_trains(&block)
     end
   end
 

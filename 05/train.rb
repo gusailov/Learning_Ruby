@@ -79,7 +79,7 @@ class Train
   end
 
   def each_wagons
-    @wagons.each_with_index { |wagon, index| yield(wagon, index) }
+    @wagons.each { |wagon| yield(wagon) }
   end
 
   protected

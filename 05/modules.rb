@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module CompanyName
   def set_company_name(name)
     self.company = name
@@ -43,5 +45,11 @@ module InstanceCounter
     def register_instance
       self.class.increment_instances
     end
+  end
+end
+
+module RandomNumber
+  def random_number
+    "#{rand(100..999)}-#{SecureRandom.alphanumeric(3).upcase}"
   end
 end
