@@ -2,8 +2,8 @@ class CargoWagon
   include CompanyName
   attr_reader :total_volume
 
-  def initialize(volume)
-    @total_volume = volume
+  def initialize(total_volume)
+    @total_volume = total_volume
     @occupied_volume = 0
     @available_volume = volume
   end
@@ -24,6 +24,6 @@ class CargoWagon
   end
 
   def available_volume_qty
-    @available_volume
+    @total_volume - @occupied_volume
   end
 end
