@@ -111,13 +111,13 @@ class Railroad
       puts 'Введите общий объем вагона'
       volume = gets.to_i
       wagon = CargoWagon.new(volume)
-      wagons << wagon
+      @wagons << wagon
       puts 'Вагон создан успешно'
     when 2
       puts 'Введите общий объем вагона'
       seats = gets.to_i
-      wagon  = PassengerWagon.new(seats)
-      wagons << wagon
+      wagon = PassengerWagon.new(seats)
+      @wagons << wagon
       puts 'Вагон создан успешно'
     else
       puts 'Команда введена не правильно'
@@ -177,12 +177,20 @@ class Railroad
 
   def move_train_route_forward
     train = train_from_list
-    train.go_next_station
+    if !train.route
+      puts 'Сначала нужно назначить маршрут поезду '
+    else
+      train.go_next_station
+    end
   end
 
   def move_train_route_back
     train = train_from_list
-    train.go_previous_station
+    if !train.route
+      puts 'Сначала нужно назначить маршрут поезду '
+    else
+      train.go_previous_station
+    end
   end
 
   def show_information
@@ -193,7 +201,7 @@ class Railroad
   def show_station_for_train
     train = train_from_list
     if !train.route
-      puts 'Сначала нкжно назначить маршрут поезду '
+      puts 'Сначала нужно назначить маршрут поезду '
     else
       train.route_point
       train.route.put_stations_list

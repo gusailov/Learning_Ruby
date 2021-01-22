@@ -31,7 +31,7 @@ class Train
   end
 
   def remove_wagon
-    @wagons.pop if @speed.zero? && !wagons.empty
+    @wagons.pop if @speed.zero? && !wagons.empty?
   end
 
   def go_faster(speed)
