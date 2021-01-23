@@ -1,12 +1,12 @@
 class Railroad
-  attr_reader :stations, :trains, :routes
+  attr_reader :stations, :trains, :routes, :wagons
 
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   def initialize
     @stations = []
     @trains = []
     @routes = []
-    @wagons = { cargowagons: [], passengerwagons: [] }
+    @wagons = { 'CargoWagon' => [], 'PassengerWagon' => [] }
   end
 
   def seed
@@ -14,8 +14,8 @@ class Railroad
     (1..3).each { |i| @trains << CargoTrain.new('111-2' + i.to_s) }
     (4..6).each { |i| @trains << PassengerTrain.new('111-2' + i.to_s) }
     @routes << Route.new(stations.first, stations.last)
-    3.times { @wagons[:cargowagons] << CargoWagon.new(70) }
-    5.times { @wagons[:passengerwagons] << PassengerWagon.new(45) }
+    3.times { @wagons['CargoWagon'] << CargoWagon.new(70) }
+    5.times { @wagons['PassengerWagon'] << PassengerWagon.new(45) }
     @trains.each { |train| @stations.first.take_train(train) }
   end
 
@@ -33,7 +33,7 @@ class Railroad
       when 6 then del_station_in_route
       when 7 then take_route_for_train
       when 8 then add_wagon_to_train
-      when 9 then del_wagon_to_train
+      when 9 then del_wagon_from_train
       when 10 then move_train_route_forward
       when 11 then move_train_route_back
       when 12 then show_information
@@ -110,12 +110,12 @@ class Railroad
     when 1
       puts 'Введите общий объем вагона'
       volume = gets.to_i
-      @wagons[:cargowagons] << CargoWagon.new(volume)
+      @wagons['CargoWagon'] << CargoWagon.new(volume)
       puts 'Вагон создан успешно'
     when 2
       puts 'Введите кол-во мест в вагоне'
       seats = gets.to_i
-      @wagons[:passengerwagons] << PassengerWagon.new(seats)
+      @wagons['PassengerWagon'] << PassengerWagon.new(seats)
       puts 'Вагон создан успешно'
     else
       puts 'Команда введена не правильно'
@@ -153,26 +153,16 @@ class Railroad
 
   def add_wagon_to_train
     train = train_from_list
-    case train.type
-    when 'cargo'
-      if @wagons[:cargowagons].empty?
-        puts 'Грузовых вагонов нет'
-      else
-        train.add_wagon(@wagons[:cargowagons].pop)
-      end
-    when 'pass'
-      if @wagons[:passengerwagons].empty?
-        puts 'Пассажирских вагонов нет'
-      else
-        train.add_wagon(@wagons[:passengerwagons].pop)
-      end
+    if @wagons[train.accept_class_wagon.to_s].empty?
+      puts 'Вагонов данного типа на станции нет'
     else
-      puts '??'
+      wagon = @wagons[train.accept_class_wagon.to_s].pop
+      train.add_wagon(wagon)
+      puts 'Вагон успешно добавлен'
     end
-    puts 'Вагон успешно добавлен'
   end
 
-  def del_wagon_to_train
+  def del_wagon_from_train
     train = train_from_list
     puts  train.remove_wagon
     puts  train.wagons
