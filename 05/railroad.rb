@@ -164,8 +164,11 @@ class Railroad
 
   def del_wagon_from_train
     train = train_from_list
-    puts  train.remove_wagon
-    puts  train.wagons
+    if train.wagons.empty?
+      puts 'у поезда нет прицепленых вагонов'
+    else
+      @wagons[train.accept_class_wagon.to_s] << train.wagons.pop
+    end
   end
 
   def move_train_route_forward
