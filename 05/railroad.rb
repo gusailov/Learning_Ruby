@@ -275,6 +275,12 @@ class Railroad
     end
   end
 
+  def show_wagons_list
+    @wagons.each_with_index do |wagon, index|
+      puts "#{index} - #{wagon.number}:#{wagon.type}"
+    end
+  end
+
   def show_stations_in_route(route)
     route.stations.each_with_index do |station, index|
       puts "#{index} - #{station.name}"
