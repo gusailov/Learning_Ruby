@@ -104,7 +104,7 @@ class Railroad
   end
 
   def create_wagon
-    puts 'Введите: 1 - создать грузовой вагон, 2 - создать пассажирский'
+    puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
     command = gets.to_i
     case command
     when 1
@@ -120,6 +120,10 @@ class Railroad
     else
       puts 'Команда введена не правильно'
     end
+  rescue RuntimeError => e
+    puts e.inspect
+
+    retry
   end
 
   def add_station_in_route
@@ -207,12 +211,12 @@ class Railroad
   def train_wagons_list
     train = train_from_list
     if !train.wagons.empty?
-      case train.type
-      when 'cargo'
+      case train.accept_class_wagon
+      when 'CargoWagon'
         train.each_wagons do |wagon|
           puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}, свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
         end
-      when 'pass'
+      when 'PassengerWagon'
         train.each_wagons do |wagon|
           puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}, свободных мест : #{wagon.free_seats}, занятых мест : #{wagon.occupied_seats}"
         end

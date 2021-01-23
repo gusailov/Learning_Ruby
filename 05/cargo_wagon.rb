@@ -1,12 +1,15 @@
 class CargoWagon
   include CompanyName
   include RandomNumber
+  include Valid
 
   attr_reader :total_volume, :occupied_volume, :number
 
+  TYPE_FORMAT = /^\S+$/.freeze
   def initialize(total_volume)
     @number = random_number
     @total_volume = total_volume
+    validate!
     @occupied_volume = 0
   end
 
@@ -22,5 +25,13 @@ class CargoWagon
 
   def available_volume
     @total_volume - @occupied_volume
+  end
+
+  protected
+
+  def validate!
+  
+    raise 'Нужно ввести объем' if @total_volume.zero?
+    
   end
 end
