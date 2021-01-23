@@ -51,5 +51,6 @@ end
 module RandomNumber
   def random_number
     "#{rand(100..999)}-#{SecureRandom.alphanumeric(3).upcase}"
+    # rand(100..999).to_s
   end
 end

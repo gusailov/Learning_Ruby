@@ -204,7 +204,7 @@ class Railroad
     end
   end
 
-  def train_wagons_list(_text = '')
+  def train_wagons_list
     train = train_from_list
     if !train.wagons.empty?
       case train.type
@@ -225,12 +225,13 @@ class Railroad
   end
 
   def take_seat_or_volume_in_wagon
-    wagons = train_wagons_list('Выберите вагон')
+    wagons = train_wagons_list
     if !wagons
       nil
     else
-      i = gets.to_i
-      wagon = wagons[i - 1]
+      puts 'Введите номер вагона'
+      number = gets.chomp
+      wagon = wagons.bsearch { |w| w.number == number }
       case wagon.class.to_s
       when 'CargoWagon'
         puts 'Введите объем, который необходимо занять'
