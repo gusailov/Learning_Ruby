@@ -104,7 +104,7 @@ class Railroad
   end
 
   def create_wagon
-    puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
+    puts 'Введите: 1 - создать грузовой вагон, 2 - создать пассажирский'
     command = gets.to_i
     case command
     when 1
@@ -122,7 +122,6 @@ class Railroad
     end
   rescue RuntimeError => e
     puts e.inspect
-
     retry
   end
 
@@ -211,7 +210,7 @@ class Railroad
   def train_wagons_list
     train = train_from_list
     if !train.wagons.empty?
-      case train.accept_class_wagon
+      case train.accept_class_wagon.to_s
       when 'CargoWagon'
         train.each_wagons do |wagon|
           puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}, свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
@@ -235,7 +234,7 @@ class Railroad
     else
       puts 'Введите номер вагона'
       number = gets.chomp
-      wagon = wagons.bsearch { |w| w.number == number }
+      wagon = wagons.detect { |w| w.number == number }
       case wagon.class.to_s
       when 'CargoWagon'
         puts 'Введите объем, который необходимо занять'
