@@ -16,8 +16,8 @@ class Railroad
     (1..3).each { |i| @trains << CargoTrain.new('111-2' + i.to_s) }
     (4..6).each { |i| @trains << PassengerTrain.new('111-2' + i.to_s) }
     @routes << Route.new(stations.first, stations.last)
-    3.times { @wagons['CargoWagon'] << CargoWagon.new(70) }
-    5.times { @wagons['PassengerWagon'] << PassengerWagon.new(45) }
+    3.times { @wagons[CargoWagon] << CargoWagon.new(70) }
+    5.times { @wagons[PassengerWagon] << PassengerWagon.new(45) }
     @trains.each { |train| @stations.first.take_train(train) }
   end
 
@@ -98,21 +98,11 @@ class Railroad
 
   def create_wagon
     puts 'Введите: 1 - создать грузовой вагон, 2 - создать пассажирский'
-    command = gets.to_i
-    case command
-    when 1
-      puts 'Введите общий объем вагона'
-      volume = gets.to_i
-      @wagons[WAGONS[command]] << WAGONS[command].new(volume)
-      puts 'Вагон создан успешно'
-    when 2
-      puts 'Введите кол-во мест в вагоне'
-      seats = gets.to_i
-      @wagons['PassengerWagon'] << PassengerWagon.new(seats)
-      puts 'Вагон создан успешно'
-    else
-      puts 'Команда введена не правильно'
-    end
+    command = gets.chomp
+    puts 'Введите общий объем(кол-во мест) вагона'
+    volume = gets.to_i
+    @wagons[WAGONS[command]] << WAGONS[command].new(volume) || (puts 'Команда введена не правильно')
+    puts 'Вагон создан успешно'
   rescue RuntimeError => e
     puts e.inspect
     retry
@@ -149,10 +139,10 @@ class Railroad
 
   def add_wagon_to_train
     train = train_from_list
-    if @wagons[train.accept_class_wagon.to_s].empty?
+    if @wagons[train.accept_class_wagon].empty?
       puts 'Вагонов данного типа на станции нет'
     else
-      wagon = @wagons[train.accept_class_wagon.to_s].pop
+      wagon = @wagons[train.accept_class_wagon].pop
       train.add_wagon(wagon)
       puts 'Вагон успешно добавлен'
     end
@@ -163,7 +153,7 @@ class Railroad
     if train.wagons.empty?
       puts 'у поезда нет прицепленых вагонов'
     else
-      @wagons[train.accept_class_wagon.to_s] << train.wagons.pop
+      @wagons[train.accept_class_wagon] << train.wagons.pop
     end
   end
 
