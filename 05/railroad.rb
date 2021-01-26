@@ -212,24 +212,20 @@ class Railroad
 
   def take_seat_or_volume_in_wagon
     wagons = train_wagons_list
-    if !wagons
-      nil
+    return unless wagons
+
+    puts 'Введите номер вагона'
+    number = gets.chomp
+    wagon = wagons.detect { |w| w.number == number }
+    case wagon.class.to_s
+    when 'CargoWagon'
+      puts 'Введите объем, который необходимо занять'
+      volume = gets.to_i
+      wagon.fill_volume(volume)
+    when 'PassengerWagon'
+      wagon.take_seat
     else
-      puts 'Введите номер вагона'
-      number = gets.chomp
-      wagon = wagons.detect { |w| w.number == number }
-      case wagon.class.to_s
-      when 'CargoWagon'
-        puts 'Введите объем, который необходимо занять'
-        volume = gets.to_i
-        wagon.fill_volume(volume)
-        puts "Вагон номер : #{wagon.number}, свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
-      when 'PassengerWagon'
-        wagon.take_seat
-        puts "Вагон номер : #{wagon.number}, свободных мест : #{wagon.free_seats}, занятых мест : #{wagon.occupied_seats}"
-      else
-        puts 'Такого вагона не существует'
-      end
+      puts 'Такого вагона не существует'
     end
   end
 

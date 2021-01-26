@@ -23,6 +23,7 @@ class CargoWagon
     else
       @occupied_volume += vol
     end
+    puts "Вагон номер : #{@number}, свободный объем : #{available_volume}, занятый объем : #{@occupied_volume}"
   end
 
   def available_volume
