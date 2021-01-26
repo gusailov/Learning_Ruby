@@ -93,27 +93,27 @@ class Train
 
   private
 
-  # вызывается внутри других методов Класса
+  # used inside other class methods
   def station_take_train
     current_station.take_train(self)
   end
 
-  # вызывается внутри других методов Класса
+  # used inside other class methods
   def station_send_train
     current_station.send_train(self)
   end
 
-  # промежуточный метод для определяния текущей станции
+  # intermediate method for determination of the current station
   def current_station
     route.stations[@index_station]
   end
 
-  # промежуточный метод для определяния следующей станции
+  # intermediate method for determination of the next station
   def next_station
     route.stations[@index_station + 1] if (@index_station + 1) < route.stations.length
   end
 
-  # промежуточный метод для определяния предыдущей станции
+  # intermediate method for determination of the previous station
   def previous_station
     route.stations[@index_station - 1] if @index_station.positive?
   end

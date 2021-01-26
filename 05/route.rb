@@ -30,8 +30,8 @@ class Route
 
   def validate!
     raise 'Начальная и конечная станции не могут совпадать' if @start == @finish
-    if !@start.instance_of?(Station) || !@finish.instance_of?(Station)
-      raise 'В маршрут могут быть добавлены ТОЛЬКО станции'
-    end
+    return unless (@start || @finish).instance_of?(Station)
+
+    raise 'В маршрут могут быть добавлены ТОЛЬКО станции'
   end
 end

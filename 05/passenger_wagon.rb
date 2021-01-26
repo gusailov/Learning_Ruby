@@ -20,7 +20,8 @@ class PassengerWagon
     else
       @occupied_seats += 1
     end
-    puts "Вагон номер : #{@number}, свободных мест : #{free_seats}, занятых мест : #{@occupied_seats}"
+    puts "Вагон номер : #{@number}," \
+         "свободных мест : #{free_seats}, занятых мест : #{@occupied_seats}"
   end
 
   def free_seats
