@@ -154,19 +154,19 @@ class Railroad
 
   def move_train_route_forward
     train = train_from_list
-    if !train.route
-      puts 'Сначала нужно назначить маршрут поезду '
-    else
+    if train.route
       train.go_next_station
+    else
+      puts 'Сначала нужно назначить маршрут поезду '
     end
   end
 
   def move_train_route_back
     train = train_from_list
-    if !train.route
-      puts 'Сначала нужно назначить маршрут поезду '
-    else
+    if train.route
       train.go_previous_station
+    else
+      puts 'Сначала нужно назначить маршрут поезду '
     end
   end
 
@@ -177,17 +177,19 @@ class Railroad
 
   def show_station_for_train
     train = train_from_list
-    if !train.route
-      puts 'Сначала нужно назначить маршрут поезду '
-    else
+    if train.route
       train.route_point
       train.route.put_stations_list
+    else
+      puts 'Сначала нужно назначить маршрут поезду '
     end
   end
 
   def train_wagons_list
     train = train_from_list
-    if !train.wagons.empty?
+    if train.wagons.empty?
+      puts 'У поезда нет вагонов'
+    else
       case train.accept_class_wagon.to_s
       when 'CargoWagon'
         cargo_wagons(train)
@@ -196,8 +198,6 @@ class Railroad
       else
         puts 'такого поезда не существует'
       end
-    else
-      puts 'У поезда нет вагонов'
     end
   end
 
@@ -308,13 +308,15 @@ class Railroad
 
   def cargo_wagons(train)
     train.each_wagons do |wagon|
-      puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}, свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
+      puts "Тип вагона : #{wagon.class}, номер : #{wagon.number},
+      свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
     end
   end
 
   def passenger_wagons(train)
     train.each_wagons do |wagon|
-      puts "Тип вагона : #{wagon.class}, номер : #{wagon.number},свободных мест : #{wagon.free_seats}, занятых мест : #{wagon.occupied_seats}"
+      puts "Тип вагона : #{wagon.class}, номер : #{wagon.number},
+      свободных мест : #{wagon.free_seats}, занятых мест : #{wagon.occupied_seats}"
     end
   end
 end
