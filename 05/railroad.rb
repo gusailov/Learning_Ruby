@@ -13,8 +13,8 @@ class Railroad
 
   def seed
     ('a'..'f').each { |i| @stations << Station.new(i) }
-    (1..3).each { |i| @trains << CargoTrain.new('111-2' + i.to_s) }
-    (4..6).each { |i| @trains << PassengerTrain.new('111-2' + i.to_s) }
+    (1..3).each { |i| @trains << CargoTrain.new("111-2#{i}") }
+    (4..6).each { |i| @trains << PassengerTrain.new("111-2#{i}") }
     @routes << Route.new(stations.first, stations.last)
     3.times { @wagons[CargoWagon] << CargoWagon.new(70) }
     5.times { @wagons[PassengerWagon] << PassengerWagon.new(45) }
@@ -64,21 +64,16 @@ class Railroad
   end
 
   def create_train
-    attempt = 0
-    begin
-      puts 'Введите номер поезда в формате ХХХ-ХХ'
-      number = gets.chomp
-      puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
-      command = gets.chomp
-      train = TRAINS[command].new(number) || (puts 'Команда введена не правильно')
-      trains << train
-      puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
-    rescue RuntimeError => e
-      puts e.inspect
-      attempt += 1
-      retry if attempt < 3
-      puts 'формат номера не соответствует ХХХ-ХХ'
-    end
+    puts 'Введите номер поезда в формате ХХХ-ХХ'
+    number = gets.chomp
+    puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
+    command = gets.chomp
+    train = TRAINS[command].new(number) || (puts 'Команда введена не правильно')
+    trains << train
+    puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
+  rescue RuntimeError => e
+    puts e.inspect
+    retry
   end
 
   def create_route
@@ -195,13 +190,9 @@ class Railroad
     if !train.wagons.empty?
       case train.accept_class_wagon.to_s
       when 'CargoWagon'
-        train.each_wagons do |wagon|
-          puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}, свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
-        end
+        cargo_wagons(train)
       when 'PassengerWagon'
-        train.each_wagons do |wagon|
-          puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}, свободных мест : #{wagon.free_seats}, занятых мест : #{wagon.occupied_seats}"
-        end
+        passenger_wagons(train)
       else
         puts 'такого поезда не существует'
       end
@@ -235,7 +226,8 @@ class Railroad
       puts "На станции #{station.name} нет поездов"
     else
       station.each_trains do |train|
-        puts "Номер поезда #{train.number}, Тип #{train.type}, Количество вагонов - #{train.wagons.size}"
+        puts "Номер поезда #{train.number},
+        Тип #{train.type}, Количество вагонов - #{train.wagons.size}"
       end
     end
   end
@@ -311,6 +303,18 @@ class Railroad
       check = (index.negative? || index > (@trains.count - 1))
       puts 'Такого поезда нет в списке' if check
       return @trains[index] unless check
+    end
+  end
+
+  def cargo_wagons(train)
+    train.each_wagons do |wagon|
+      puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}, свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
+    end
+  end
+
+  def passenger_wagons(train)
+    train.each_wagons do |wagon|
+      puts "Тип вагона : #{wagon.class}, номер : #{wagon.number},свободных мест : #{wagon.free_seats}, занятых мест : #{wagon.occupied_seats}"
     end
   end
 end
