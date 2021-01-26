@@ -2,11 +2,13 @@ class Railroad
   attr_reader :stations, :trains, :routes, :wagons
 
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
+  TRAINS = { '1' => CargoTrain, '2' => PassengerTrain }.freeze
+  WAGONS = { '1' => CargoWagon, '2' => PassengerWagon }.freeze
   def initialize
     @stations = []
     @trains = []
     @routes = []
-    @wagons = { 'CargoWagon' => [], 'PassengerWagon' => [] }
+    @wagons = { CargoWagon => [], PassengerWagon => [] }
   end
 
   def seed
@@ -67,19 +69,10 @@ class Railroad
       puts 'Введите номер поезда в формате ХХХ-ХХ'
       number = gets.chomp
       puts 'Введите: 1 - создать грузовой поезд, 2 - создать пассажирский'
-      command = gets.to_i
-      case command
-      when 1
-        train = CargoTrain.new(number)
-        trains << train
-        puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
-      when 2
-        train = PassengerTrain.new(number)
-        trains << train
-        puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
-      else
-        puts 'Команда введена не правильно'
-      end
+      command = gets.chomp
+      train = TRAINS[command].new(number) || (puts 'Команда введена не правильно')
+      trains << train
+      puts "Поезд с номером:#{number}, типа:#{train.type}, создан успешно"
     rescue RuntimeError => e
       puts e.inspect
       attempt += 1
@@ -110,7 +103,7 @@ class Railroad
     when 1
       puts 'Введите общий объем вагона'
       volume = gets.to_i
-      @wagons['CargoWagon'] << CargoWagon.new(volume)
+      @wagons[WAGONS[command]] << WAGONS[command].new(volume)
       puts 'Вагон создан успешно'
     when 2
       puts 'Введите кол-во мест в вагоне'

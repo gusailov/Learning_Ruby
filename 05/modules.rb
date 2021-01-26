@@ -1,5 +1,3 @@
-require 'securerandom'
-
 module CompanyName
   def set_company_name(name)
     self.company = name
@@ -50,7 +48,6 @@ end
 
 module RandomNumber
   def random_number
-    "#{rand(100..999)}-#{SecureRandom.alphanumeric(3).upcase}"
-    # rand(100..999).to_s
+    "#{rand(100..999)}-#{rand(36**3).to_s(36).upcase}"
   end
 end

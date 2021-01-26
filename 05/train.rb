@@ -57,19 +57,19 @@ class Train
   end
 
   def go_next_station
-    if next_station
-      station_send_train
-      @index_station += 1
-      station_take_train
-    end
+    return unless next_station
+
+    station_send_train
+    @index_station += 1
+    station_take_train
   end
 
   def go_previous_station
-    if previous_station
-      station_send_train
-      @index_station -= 1
-      station_take_train
-    end
+    return unless previous_station
+
+    station_send_train
+    @index_station -= 1
+    station_take_train
   end
 
   def route_point
