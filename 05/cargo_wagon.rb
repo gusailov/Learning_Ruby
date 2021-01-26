@@ -5,14 +5,13 @@ class CargoWagon
 
   attr_reader :total_volume, :occupied_volume, :number
 
-  @@wagons = {}
-
   def initialize(total_volume)
     @number = random_number
     @total_volume = total_volume
+    @wagons = {}
     validate!
     @occupied_volume = 0
-    @@wagons[number] = self
+    @wagons[number] = self
   end
 
   def fill_volume(vol)
@@ -34,6 +33,6 @@ class CargoWagon
 
   def validate!
     raise 'Нужно ввести объем' if @total_volume.zero?
-    raise 'Вагон с таким номером уже создан' if @@wagons.key?(number)
+    raise 'Вагон с таким номером уже создан' if @wagons.key?(number)
   end
 end
