@@ -1,11 +1,25 @@
 class Train
+  include InstanceCounter
+  include CompanyName
+  include Valid
   attr_reader :number, :type, :speed, :wagons, :route
+
+  NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
+  TYPE_FORMAT = /^\S+$/.freeze
+  @@trains = {}
 
   def initialize(number, type)
     @number = number
+    @type = type
+    validate!
     @wagons = []
     @speed = 0
-    @type = type
+    @@trains[self.number] = self
+    register_instance
+  end
+
+  def self.find(num)
+    @@trains[num]
   end
 
   def add_wagon(wagon)
@@ -17,7 +31,7 @@ class Train
   end
 
   def remove_wagon
-    @wagons.pop if @speed.zero? && !wagons.empty
+    @wagons.pop if @speed.zero? && !wagons.empty?
   end
 
   def go_faster(speed)
@@ -43,25 +57,38 @@ class Train
   end
 
   def go_next_station
-    if next_station
-      station_send_train
-      @index_station += 1
-      station_take_train
-    end
+    return unless next_station
+
+    station_send_train
+    @index_station += 1
+    station_take_train
   end
 
   def go_previous_station
-    if previous_station
-      station_send_train
-      @index_station -= 1
-      station_take_train
-    end
+    return unless previous_station
+
+    station_send_train
+    @index_station -= 1
+    station_take_train
   end
 
   def route_point
     puts "Предыдущая станция: #{previous_station.name}" if previous_station
     puts "В данный момент поезд на станции: #{current_station.name}"
     puts "Следующая станция: #{next_station.name}" if next_station
+  end
+
+  def each_wagons
+    @wagons.each { |wagon| yield(wagon) }
+  end
+
+  protected
+
+  def validate!
+    raise 'Формат номера должен быть ХХХ-ХХ' if number !~ NUMBER_FORMAT
+    raise 'Нужно ввести тип' if type.empty?
+    raise 'В названии типа не должно быть пробелов, используйте "_"' if type !~ TYPE_FORMAT
+    raise 'Поезд с таким номером уже создан' if @@trains.key?(number)
   end
 
   private
