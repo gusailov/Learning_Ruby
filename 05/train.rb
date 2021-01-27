@@ -7,19 +7,28 @@ class Train
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   TYPE_FORMAT = /^\S+$/.freeze
 
+  class << self
+    def find(num)
+      @trains[num]
+    end
+
+    def all_trains
+      @all_trains ||= {}
+    end
+
+    def store_train(number)
+      all_trains[number] = self
+    end
+  end
+
   def initialize(number, type)
     @number = number
     @type = type
-    @trains = {}
     validate!
-    @trains[self.number] = self
+    self.class.store_train(number)
     @wagons = []
     @speed = 0
     register_instance
-  end
-
-  def self.find(num)
-    @trains[num]
   end
 
   def add_wagon(wagon)
@@ -88,7 +97,7 @@ class Train
     raise 'Формат номера должен быть ХХХ-ХХ' if number !~ NUMBER_FORMAT
     raise 'Нужно ввести тип' if type.empty?
     raise 'В названии типа не должно быть пробелов, используйте "_"' if type !~ TYPE_FORMAT
-    raise 'Поезд с таким номером уже создан' if @trains.key?(number)
+    raise 'Поезд с таким номером уже создан' if self.class.trains.key?(number)
   end
 
   private
