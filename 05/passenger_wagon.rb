@@ -29,6 +29,10 @@ class PassengerWagon
     @all_seats - @occupied_seats
   end
 
+  def info
+    puts "Вагон номер: #{number}, свободных мест: #{free_seats}, занятых мест: #{occupied_seats}"
+  end
+
   protected
 
   def validate!

@@ -31,6 +31,11 @@ class CargoWagon
     @total_volume - @occupied_volume
   end
 
+  def info
+    puts "Вагон номер: #{number}," \
+    "свободный объем: #{available_volume}, занятый объем: #{occupied_volume}"
+  end
+
   protected
 
   def validate!

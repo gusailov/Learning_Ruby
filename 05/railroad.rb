@@ -195,20 +195,7 @@ class Railroad
 
   def train_wagons_list
     train = train_from_list
-
-    if train.wagons.empty?
-      puts 'У поезда нет вагонов'
-    else
-
-      case train.accept_class_wagon.to_s
-      when 'CargoWagon'
-        cargo_wagons(train)
-      when 'PassengerWagon'
-        passenger_wagons(train)
-      else
-        puts 'такого поезда не существует'
-      end
-    end
+    train.wagons.empty? ? (puts 'У поезда нет вагонов') : train.wagons.each(&:info)
   end
 
   def take_seat_or_volume_in_wagon
@@ -327,20 +314,6 @@ class Railroad
       puts 'Такого поезда нет в списке' if check
 
       return @trains[index] unless check
-    end
-  end
-
-  def cargo_wagons(train)
-    train.each_wagons do |wagon|
-      puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}," \
-           "свободный объем : #{wagon.available_volume}, занятый объем : #{wagon.occupied_volume}"
-    end
-  end
-
-  def passenger_wagons(train)
-    train.each_wagons do |wagon|
-      puts "Тип вагона : #{wagon.class}, номер : #{wagon.number}," \
-           "свободных мест : #{wagon.free_seats}, занятых мест : #{wagon.occupied_seats}"
     end
   end
 end
