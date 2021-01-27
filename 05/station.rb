@@ -3,14 +3,15 @@ class Station
   include Valid
   attr_reader :name, :trains
 
-  @@stations = []
+  @@stations = {}
+
   NAME_FORMAT = /^\S+$/.freeze
 
   def initialize(name)
     @name = name
     validate!
     @trains = []
-    @@stations << self
+    @@stations[self.name] = self
     register_instance
   end
 
@@ -45,5 +46,6 @@ class Station
   def validate!
     raise 'ВВЕДИТЕ ИМЯ' if name.to_s.empty?
     raise 'В имени не должно быть пробелов, используйте "_"' if name !~ NAME_FORMAT
+    raise 'Станция с таким именем уже существует' if @@stations.key?(name)
   end
 end

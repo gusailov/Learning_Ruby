@@ -55,13 +55,11 @@ class Railroad
   def create_station
     puts 'Введите название станции'
     name = gets.chomp
-
-    if @stations.any? { |st| st.name == name }
-      puts 'Станция с таким именем уже существует'
-    else
-      @stations << Station.new(name)
-      puts "Станция #{name} создана успешно"
-    end
+    @stations << Station.new(name)
+    puts "Станция #{name} создана успешно"
+  rescue RuntimeError => e
+    puts e.inspect
+    retry
   end
 
   def create_train
