@@ -1,8 +1,11 @@
 class Train
+  include Acсessors
   include InstanceCounter
   include CompanyName
   include Valid
   attr_reader :number, :type, :speed, :wagons, :route
+
+  attr_accessor_with_history :my_attr
 
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   TYPE_FORMAT = /^\S+$/.freeze

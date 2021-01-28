@@ -1,26 +1,3 @@
-module CompanyName
-  def set_company_name(name)
-    self.company = name
-  end
-
-  def get_company_name
-    company
-  end
-
-  protected
-
-  attr_accessor :company
-end
-
-module Valid
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-end
-
 module InstanceCounter
   def self.included(base)
     base.extend ClassMethods
@@ -43,11 +20,5 @@ module InstanceCounter
     def register_instance
       self.class.increment_instances
     end
-  end
-end
-
-module RandomNumber
-  def random_number
-    "#{rand 100..999}-#{rand(36**3).to_s(36).upcase}"
   end
 end

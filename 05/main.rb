@@ -1,4 +1,4 @@
-require_relative 'modules'
+require_relative './modules/modules'
 require_relative 'station'
 require_relative 'route'
 require_relative 'train'
