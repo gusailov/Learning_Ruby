@@ -2,18 +2,20 @@ class Train
   include Acсessors
   include InstanceCounter
   include CompanyName
-  include Valid
+  # include Valid
   include Validation
   attr_reader :number, :type, :speed, :wagons, :route
 
   attr_accessor_with_history :my_attr, :a
   strong_attr_accessor('b', String)
-  validate :name, :presence
 
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   TYPE_FORMAT = /^\S+$/.freeze
 
   @@trains = {}
+
+  validate :number, :presence
+  # validate :number, :format, NUMBER_FORMAT
 
   class << self
     def find(num)
@@ -87,14 +89,12 @@ class Train
     puts "Следующая станция: #{next_station.name}" if next_station
   end
 
-  protected
-
-  def validate!
-    raise 'Формат номера должен быть ХХХ-ХХ' if number !~ NUMBER_FORMAT
-    raise 'Нужно ввести тип' if type.empty?
-    raise 'В названии типа не должно быть пробелов, используйте "_"' if type !~ TYPE_FORMAT
-    raise 'Поезд с таким номером уже создан' if @@trains.key?(number)
-  end
+  # def validate!
+  #   raise 'Формат номера должен быть ХХХ-ХХ' if number !~ NUMBER_FORMAT
+  #   raise 'Нужно ввести тип' if type.empty?
+  #   raise 'В названии типа не должно быть пробелов, используйте "_"' if type !~ TYPE_FORMAT
+  #   raise 'Поезд с таким номером уже создан' if @@trains.key?(number)
+  # end
 
   private
 

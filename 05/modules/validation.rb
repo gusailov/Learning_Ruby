@@ -21,7 +21,15 @@ module Validation
 
   module InstanceMethods
     def validate!
-      self.class.values
+      puts "Тип валидации #{params[:validate]}"
+      self.class.send(:validate, *args)
+    end
+
+    def valid?
+      validate!
+      true
+    rescue StandardError
+      false
     end
   end
 end
