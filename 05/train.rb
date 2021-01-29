@@ -6,6 +6,7 @@ class Train
   attr_reader :number, :type, :speed, :wagons, :route
 
   attr_accessor_with_history :my_attr, :a
+  strong_attr_accessor('b', String)
 
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   TYPE_FORMAT = /^\S+$/.freeze

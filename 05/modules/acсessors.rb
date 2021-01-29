@@ -15,12 +15,20 @@ module Acсessors
         values[var_name] ||= []
         define_method(name) { instance_variable_get(var_name) }
         define_method("#{name}=".to_sym) do |value|
-          puts "values before#{values}"
           values[var_name] << value
-          puts "values after#{values}"
           instance_variable_set(var_name, value)
         end
         define_method("#{name}_history") { values[var_name] }
+      end
+    end
+
+    def strong_attr_accessor(name, cl)
+      var_name = "@#{name}".to_sym
+      define_method(name) { instance_variable_get(var_name) }
+      define_method("#{name}=".to_sym) do |value|
+        raise 'Тип указанного значения не соответствует заданному' if value.class != cl
+
+        instance_variable_set(var_name, value)
       end
     end
   end
