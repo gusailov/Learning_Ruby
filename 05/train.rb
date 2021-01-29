@@ -3,10 +3,12 @@ class Train
   include InstanceCounter
   include CompanyName
   include Valid
+  include Validation
   attr_reader :number, :type, :speed, :wagons, :route
 
   attr_accessor_with_history :my_attr, :a
   strong_attr_accessor('b', String)
+  validate :name, :presence
 
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
   TYPE_FORMAT = /^\S+$/.freeze
