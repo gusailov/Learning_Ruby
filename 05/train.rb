@@ -1,5 +1,5 @@
 class Train
-  include Acсessors
+  extend Acсessors
   include InstanceCounter
   include CompanyName
   # include Valid
@@ -14,7 +14,7 @@ class Train
 
   @@trains = {}
 
-  validate :number, :presence
+  #validate :number, :presence
   # validate :number, :format, NUMBER_FORMAT
 
   class << self
@@ -26,7 +26,7 @@ class Train
   def initialize(number, type)
     @number = number
     @type = type
-    validate!
+    #validate!
     @@trains[self.number] = self
     @wagons = []
     @speed = 0
