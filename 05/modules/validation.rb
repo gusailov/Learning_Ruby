@@ -6,13 +6,15 @@ module Validation
 
   module ClassMethods
     def validations
-      @validations ||= {}
+      @validations ||= []
     end
 
     def validate(*attr_names, **args)
-      type = args.keys.first
-      puts "validate type #{type}"
-      validations[type] = { attributes: attr_names, arg: args[type] }
+      types = args.keys
+      types.each do |type|
+        validation = { type => { attributes: attr_names, arg: args[type] } }
+        validations << validation
+      end
     end
   end
 
@@ -28,9 +30,11 @@ module Validation
 
     def validate!
       puts "self.class.validations #{self.class.validations}"
-      self.class.validations.each do |type, options|
-        options[:attributes].each do |attr_name|
-          send("validate_#{type}_of", attr_name, options[:arg])
+      self.class.validations.each do |validation|
+        validation.each do |type, options|
+          options[:attributes].each do |attr_name|
+            send("validate_#{type}_of", attr_name, options[:arg])
+          end
         end
       end
     end
