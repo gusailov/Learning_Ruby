@@ -1,6 +1,6 @@
 class Station
   include InstanceCounter
-  include Valid
+  
   attr_reader :name, :trains
 
   @@stations = {}
@@ -9,7 +9,7 @@ class Station
 
   def initialize(name)
     @name = name
-    validate!
+   
     @trains = []
     @@stations[self.name] = self
     register_instance
@@ -43,9 +43,9 @@ class Station
 
   protected
 
-  def validate!
-    raise 'ВВЕДИТЕ ИМЯ' if name.to_s.empty?
-    raise 'В имени не должно быть пробелов, используйте "_"' if name !~ NAME_FORMAT
-    raise 'Станция с таким именем уже существует' if @@stations.key?(name)
-  end
+  # def validate!
+  #   raise 'ВВЕДИТЕ ИМЯ' if name.to_s.empty?
+  #   raise 'В имени не должно быть пробелов, используйте "_"' if name !~ NAME_FORMAT
+  #   raise 'Станция с таким именем уже существует' if @@stations.key?(name)
+  # end
 end

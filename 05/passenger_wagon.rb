@@ -1,7 +1,6 @@
 class PassengerWagon
   include CompanyName
   include RandomNumber
-  include Valid
 
   attr_reader :all_seats, :number, :occupied_seats
 
@@ -10,7 +9,6 @@ class PassengerWagon
   def initialize(all_seats)
     @number = random_number
     @all_seats = all_seats
-    validate!
     @@wagons[number] = self
     @occupied_seats = 0
   end
@@ -32,10 +30,8 @@ class PassengerWagon
     puts "Вагон номер: #{number}, свободных мест: #{free_seats}, занятых мест: #{occupied_seats}"
   end
 
-  protected
-
-  def validate!
-    raise 'Нужно ввести кол-во мест' if @all_seats.zero?
-    raise 'Вагон с таким номером уже создан' if @@wagons.key?(number)
-  end
+  # def validate!
+  #   raise 'Нужно ввести кол-во мест' if @all_seats.zero?
+  #   raise 'Вагон с таким номером уже создан' if @@wagons.key?(number)
+  # end
 end

@@ -2,7 +2,6 @@ class Train
   extend Acсessors
   include InstanceCounter
   include CompanyName
-  # include Valid
   include Validation
   attr_reader :number, :type, :speed, :wagons, :route
 
@@ -14,8 +13,9 @@ class Train
 
   @@trains = {}
 
-  #validate :number, :presence
-  # validate :number, :format, NUMBER_FORMAT
+  validate(:number, :type, presence: true)
+  validate(:number, format: NUMBER_FORMAT)
+  validate(:type, format: TYPE_FORMAT)
 
   class << self
     def find(num)
@@ -26,7 +26,7 @@ class Train
   def initialize(number, type)
     @number = number
     @type = type
-    #validate!
+    validate!
     @@trains[self.number] = self
     @wagons = []
     @speed = 0
@@ -90,9 +90,6 @@ class Train
   end
 
   # def validate!
-  #   raise 'Формат номера должен быть ХХХ-ХХ' if number !~ NUMBER_FORMAT
-  #   raise 'Нужно ввести тип' if type.empty?
-  #   raise 'В названии типа не должно быть пробелов, используйте "_"' if type !~ TYPE_FORMAT
   #   raise 'Поезд с таким номером уже создан' if @@trains.key?(number)
   # end
 

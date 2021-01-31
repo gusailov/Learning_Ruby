@@ -1,7 +1,6 @@
 class CargoWagon
   include CompanyName
   include RandomNumber
-  include Valid
 
   attr_reader :total_volume, :occupied_volume, :number
 
@@ -10,7 +9,6 @@ class CargoWagon
   def initialize(total_volume)
     @number = random_number
     @total_volume = total_volume
-    validate!
     @@wagons[number] = self
     @occupied_volume = 0
   end
@@ -35,10 +33,8 @@ class CargoWagon
     "свободный объем: #{available_volume}, занятый объем: #{occupied_volume}"
   end
 
-  protected
-
-  def validate!
-    raise 'Нужно ввести объем' if @total_volume.zero?
-    raise 'Вагон с таким номером уже создан' if @@wagons.key?(number)
-  end
+  # def validate!
+  #   raise 'Нужно ввести объем' if @total_volume.zero?
+  #   raise 'Вагон с таким номером уже создан' if @@wagons.key?(number)
+  # end
 end

@@ -1,12 +1,10 @@
 class Route
   include InstanceCounter
-  include Valid
   attr_reader :stations
 
   def initialize(start, finish)
     @start = start
     @finish = finish
-    validate!
     @stations = [start, finish]
     register_instance
   end
@@ -26,12 +24,10 @@ class Route
     end
   end
 
-  protected
-
-  def validate!
-    raise 'Начальная и конечная станции не могут совпадать' if @start == @finish
-    if !@start.instance_of?(Station) || !@finish.instance_of?(Station)
-      raise 'В маршрут могут быть добавлены ТОЛЬКО станции'
-    end
-  end
+  # def validate!
+  #   raise 'Начальная и конечная станции не могут совпадать' if @start == @finish
+  #   if !@start.instance_of?(Station) || !@finish.instance_of?(Station)
+  #     raise 'В маршрут могут быть добавлены ТОЛЬКО станции'
+  #   end
+  # end
 end
