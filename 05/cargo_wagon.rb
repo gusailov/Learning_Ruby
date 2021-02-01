@@ -13,6 +13,10 @@ class CargoWagon
     @occupied_volume = 0
   end
 
+  def self.all
+    @@wagons
+  end
+
   def fill_volume(vol)
     if available_volume.zero?
       puts 'Весь объем занят'

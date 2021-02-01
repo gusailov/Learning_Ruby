@@ -13,6 +13,10 @@ class PassengerWagon
     @occupied_seats = 0
   end
 
+  def self.all
+    @@wagons
+  end
+
   def take_seat
     if free_seats.zero?
       puts 'Свободных мест нет'

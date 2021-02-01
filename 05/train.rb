@@ -14,12 +14,18 @@ class Train
   @@trains = {}
 
   validate(:number, :type, presence: true)
+  validate(:number, uniqueness: true)
+  # validate(:wagons, attr_type: Array)
   validate(:number, format: NUMBER_FORMAT)
   validate(:type, format: TYPE_FORMAT)
 
   class << self
     def find(num)
       @trains[num]
+    end
+
+    def all
+      @@trains
     end
   end
 

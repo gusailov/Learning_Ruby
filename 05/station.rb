@@ -1,15 +1,16 @@
 class Station
   include InstanceCounter
-  
+  include Validation
+
   attr_reader :name, :trains
 
   @@stations = {}
 
   NAME_FORMAT = /^\S+$/.freeze
-
+  validate(:name, uniqueness: true)
   def initialize(name)
     @name = name
-   
+    validate!
     @trains = []
     @@stations[self.name] = self
     register_instance
@@ -40,8 +41,6 @@ class Station
   def each_trains
     @trains.each { |train| yield(train) }
   end
-
-  protected
 
   # def validate!
   #   raise 'ВВЕДИТЕ ИМЯ' if name.to_s.empty?
