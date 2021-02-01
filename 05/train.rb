@@ -15,7 +15,7 @@ class Train
 
   validate(:number, :type, presence: true)
   validate(:number, uniqueness: true)
-  # validate(:wagons, attr_type: Array)
+  validate(:number, attr_type: String)
   validate(:number, format: NUMBER_FORMAT)
   validate(:type, format: TYPE_FORMAT)
 
